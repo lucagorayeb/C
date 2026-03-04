@@ -8,12 +8,27 @@
 // ----------------------------------------------------- 
 #include <stdio.h> 
 
-int main() {
+int reverseNumber(int);
 
+int main() {
+	int number;
+	printf("Digite um número: ");
+	scanf("%d", &number);
+	printf("%d\n", reverseNumber(number));
         return 0;
 }
 
-int numberSize(int number){
-	
+int reverseNumber(int number){
+	int reverse = 0;
+
+	while(number > 0){
+		int dgt = number % 10;
+		reverse = (reverse * 10) + dgt;
+		number = number / 10;
+	}
+
+	return reverse;
 }
+		
+
 
