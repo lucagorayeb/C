@@ -10,7 +10,13 @@
 #include <string.h>
 
 int main() {
-
+        char array[] = "vasco da gama";
+        int i = 0;
+        while(array[i] != '\0'){
+                printf("%c", array[i]);
+                i++;
+        }
+        printf("\n");
         return 0;
 }
 
