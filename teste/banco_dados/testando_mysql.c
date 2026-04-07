@@ -13,7 +13,7 @@
 
 #define HOST "localhost"
 #define USER "root"
-#define PASS "g0ml$5@9kS!"
+#define PASS ""
 #define DB "banco_c"
 
 int main() {
