@@ -16,12 +16,16 @@ int inicializaArray(void);
 void menuAviao(void);
 int ehFumante(int);
 int marcaAssento(int);
-void menuEscolhaOutroAssento(int);
-void menuEscolhaOutroAssento(int numero);
 int sorteiaAssentoFumante(void);
 int sorteiaAssentoNaoFumante(void);
 void respostaInvalida(void);
-void mostraAssentosDisponiveis(int[], int);
+//void mostraAssentosDisponiveis(int[], int);
+void verificaAviaoLotado(int*, int, int);
+int assentoFumantesCheio(int*, int);
+int assentoNaoFumantesCheio(int*, int);
+int perguntaAoNaoFumante(void);
+int perguntaAoFumante(void);
+int verificaRespostaDaPergunta(char resposta);
 
 int main() {
         srand(time(NULL));
@@ -65,15 +69,16 @@ int marcaAssento(int numero){
         int static assentos[TAMANHO];
 
         for(int i = 1; i <= TAMANHO; i++){
-                if(i == numero && assentos[i] != 1){
+                if(i <= 5 && assentos[i] != 1){
                         assentos[i] = 1;
                 }
         }
-        mostraAssentosDisponiveis(assentos, TAMANHO);
+        verificaAviaoLotado(assentos, TAMANHO, numero);
+        //mostraAssentosDisponiveis(assentos, TAMANHO);
 
 }
 
-void mostraAssentosDisponiveis(int assentos[], int tamanho){
+/*void mostraAssentosDisponiveis(int assentos[], int tamanho){
         for(int i = 1; i <= tamanho; i++){
                 if(assentos[i] != 1){
                         if(i <= 5){
@@ -82,6 +87,80 @@ void mostraAssentosDisponiveis(int assentos[], int tamanho){
                                 printf("O assento número %d para não fumantes está disponível!\n", i);
                         }
                 }
+        }
+}*/
+
+void verificaAviaoLotado(int *array, int tamanho, int resposta){
+
+        int assentoFumante = assentoFumantesCheio(array, tamanho);
+        int assentoNaoFumante = assentoNaoFumantesCheio(array, tamanho);
+
+        if(assentoFumante == 0 && assentoNaoFumante == 0){
+                printf("Avião atingiu a capacidade máxima!\n");
+                printf("Próximo voo em 3 horas!\n");
+        }else if(assentoFumante == 1 && assentoNaoFumante == 0){
+                if(resposta == 2){
+                        perguntaAoNaoFumante();
+                }
+        }else if(assentoFumante == 0 && assentoNaoFumante == 1){
+                perguntaAoFumante();
+        }
+}
+
+int assentoFumantesCheio(int *array, int tamanho){
+        tamanho /= 2;
+        int verificador = 0;
+        for(int i = 1; i <= tamanho; i++){
+                if(array[i] == 1){
+                        verificador++;
+                }
+        }
+
+        if(verificador == tamanho){
+                return 0; // true
+        }else{
+                return 1; // false
+        }
+}
+
+int assentoNaoFumantesCheio(int *array, int tamanho){
+        int verificador = 0;
+        for(int i = 6; i <= tamanho; i++){
+                if(array[i] == 1){
+                        verificador++;
+                }
+        }
+
+        if(verificador == tamanho/2){
+                return 0; // true
+        }else{
+                return 1; // false
+        }
+}
+
+int perguntaAoNaoFumante(void){
+        char resposta;
+        printf("Temos assento livre no setor dos fumantes!\n");
+        printf("Gostaria de sentar lá? [S/N] ");
+        scanf("%c", &resposta);
+        return verificaRespostaDaPergunta(resposta);
+
+}
+
+int perguntaAoFumante(void){
+        char resposta;
+        printf("Temos assento livre no setor dos não fumantes!\n");
+        printf("Gostaria de sentar lá? [S/N] ");
+        scanf("%c", &resposta);
+        return verificaRespostaDaPergunta(resposta);
+
+}
+
+int verificaRespostaDaPergunta(char resposta){
+        if(resposta == 'S' || resposta == 's'){
+                return 0;
+        }else{
+                return 1;
         }
 }
 
